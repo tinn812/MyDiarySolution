@@ -21,7 +21,7 @@ namespace DiaryApp.Pages.Diaries
         [BindProperty]
         public IFormFile? Upload { get; set; }
 
-        public void OnGet() 
+        public void OnGet()
         {
             Diary = new DiaryViewModel
             {
