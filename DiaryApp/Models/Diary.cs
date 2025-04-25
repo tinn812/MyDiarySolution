@@ -19,5 +19,11 @@ namespace DiaryApp.Models
 
         public string? ImagePath { get; set; }
 
+        // 建構子，確保 DiaryTags 不為 null
+        public Diary()
+        {
+            DiaryTags = new List<DiaryTag>();
+        }
+
     }
 }

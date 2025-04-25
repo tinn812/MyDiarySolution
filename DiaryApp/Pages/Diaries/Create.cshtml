@@ -7,10 +7,10 @@
 <h2>📝 新增日誌</h2>
 
 <form method="post" enctype="multipart/form-data">
-    <div>
+    <div class="form-group">
         <label for="Diary_Title">標題：</label>
-        <input asp-for="Diary.Title" />
-        <span asp-validation-for="Diary.Title"></span>
+        <input asp-for="Diary.Title" class="form-control" />
+        <span asp-validation-for="Diary.Title" class="text-danger"></span>
     </div>
 
     <div>
