@@ -23,7 +23,7 @@ jobs:
 
       # 3️⃣ 還原專案依賴（nuget 套件）
       - name: Restore dependencies
-        run: dotnet restore DiaryApp/DiaryApp.csproj
+        run: dotnet restore MyDiarySolution.sln
 
       # 4️⃣ 執行靜態程式碼格式檢查（等於 `dotnet format --check`）
       - name: Format check
@@ -36,7 +36,7 @@ jobs:
 
       # 6️⃣ 執行單元測試
       - name: Run unit Tests
-        run: dotnet test DiaryApp.Tests/DiaryApp.Tests.csproj --no-build --verbosity normal
+        run: dotnet test MyDiarySolution.sln --no-build --verbosity normal
 
       # 7️⃣ 將建置輸出作為 Artifact 上傳（模擬部署用）
       - name: Publish App
