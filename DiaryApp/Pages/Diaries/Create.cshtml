@@ -1,0 +1,44 @@
+﻿@page
+@model DiaryApp.Pages.Diaries.CreateModel
+@{
+    ViewData["Title"] = "新增日誌";
+}
+
+<h2>📝 新增日誌</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label for="Diary_Title">標題：</label>
+        <input asp-for="Diary.Title" />
+        <span asp-validation-for="Diary.Title"></span>
+    </div>
+
+    <div>
+        <label for="Diary_Date">日期：</label>
+        <input asp-for="Diary.Date" type="date" value="@Model.Diary.Date.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Diary.Date"></span>
+    </div>
+
+    <div>
+        <label for="Diary_Content">內容：</label><br />
+        <textarea asp-for="Diary.Content" rows="8" cols="50"></textarea>
+        <span asp-validation-for="Diary.Content"></span>
+    </div>
+
+    <div>
+        <label asp-for="Upload">附加圖片：</label>
+        <input asp-for="Upload" type="file" />
+    </div>
+
+    <div>
+        <label for="Diary_Tags">標籤（用逗號分隔）：</label>
+        <input asp-for="Diary.Tags" />
+        <span asp-validation-for="Diary.Tags"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 儲存</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

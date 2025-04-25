@@ -1,0 +1,52 @@
+﻿@page "{id:int}"
+@model DiaryApp.Pages.Diaries.DetailsModel
+@{
+    ViewData["Title"] = "日誌詳細內容";
+}
+
+<h2>@Model.Diary.Title</h2>
+
+<p><strong>日期：</strong>@Model.Diary.Date.ToString("yyyy-MM-dd")</p>
+
+<p><strong>標籤：</strong>
+    @foreach (var tag in Model.Diary.DiaryTags.Select(dt => dt.Tag))
+    {
+        <span style="background-color: #eee; padding: 3px 6px; margin-right: 5px;">@tag.Name</span>
+    }
+</p>
+
+<pre style="background-color: #f9f9f9; padding: 1.5em; white-space: pre-wrap; font-size: 1.1em; line-height: 1.6; border-radius: 8px;">
+@Model.Diary.Content
+</pre>
+
+
+@if (!string.IsNullOrEmpty(Model.Diary.ImagePath))
+{
+    <div class="mb-4">
+        <img src="@Model.Diary.ImagePath" alt="日誌圖片" style="max-width: 100%; height: auto; border-radius: 8px;" />
+    </div>
+}
+
+<!-- <p>
+    <a asp-page="Edit" asp-route-id="@Model.Diary.Id" class="btn btn-warning">✏️ 編輯</a>
+    <form method="post" asp-page-handler="Delete" onsubmit="return confirm('確定要刪除這篇日誌嗎？');" style="display:inline;">
+        <input type="hidden" name="id" value="@Model.Diary.Id" />
+        <button type="submit" class="btn btn-danger">🗑️ 刪除</button>
+    </form>
+</p> -->
+<div> <!-- 讓編輯和刪除並排一列 -->
+    <span style="display:inline-block; vertical-align:middle;">
+        <a asp-page="Edit" asp-route-id="@Model.Diary.Id" class="btn btn-warning">✏️ 編輯</a>
+    </span>
+    <span style="display:inline-block; vertical-align:middle; margin-left: 10px;">
+        <form method="post" asp-page-handler="Delete"
+              onsubmit="return confirm('確定要刪除這篇日誌嗎？');"
+              style="display:inline;">
+            <input type="hidden" name="id" value="@Model.Diary.Id" />
+            <button type="submit" class="btn btn-danger">🗑️ 刪除</button>
+        </form>
+    </span>
+</div>
+
+
+<p><a asp-page="Index">⬅ 返回列表</a></p>

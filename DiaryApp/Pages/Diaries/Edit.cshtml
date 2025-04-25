@@ -1,0 +1,54 @@
+﻿@page "{id:int}"
+@model DiaryApp.Pages.Diaries.EditModel
+@{
+    ViewData["Title"] = "編輯日誌";
+}
+
+<h2>✏️ 編輯日誌</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Diary.Id" />
+
+    <div>
+        <label>標題：</label>
+        <input asp-for="Diary.Title" />
+    </div>
+
+    <div>
+        <label>日期：</label>
+        <input asp-for="Diary.Date" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Diary.Tags" class="control-label">標籤（用逗號分隔）</label>
+        <input asp-for="Diary.Tags" class="form-control" />
+        <span asp-validation-for="Diary.Tags" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="Diary_Content">內容：</label><br />
+        <textarea asp-for="Diary.Content" id="Diary_Content" rows="12" 
+                style="width: 100%; padding: 1em; font-size: 1em; line-height: 1.5; border-radius: 6px;"></textarea>
+    </div>
+
+
+    @if (!string.IsNullOrEmpty(Model.Diary.ExistingImagePath))
+    {
+        <div>
+            <label>目前圖片：</label><br />
+            <img src="@Model.Diary.ExistingImagePath" style="max-width: 200px;" />
+            <div>
+                <input type="checkbox" asp-for="Diary.DeleteImage" />
+                <label asp-for="Diary.DeleteImage">刪除圖片</label>
+            </div>
+        </div>
+    }
+
+    <div>
+        <label>更新圖片（可選）：</label>
+        <input type="file" name="Upload" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">💾 儲存</button>
+    <a asp-page="Index">取消</a>
+</form>

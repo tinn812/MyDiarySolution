@@ -1,0 +1,70 @@
+﻿@page
+@model DiaryApp.Pages.Diaries.IndexModel
+@{
+    ViewData["Title"] = "我的日誌列表";
+}
+
+<h2>📋 我的日誌列表</h2>
+<p style="color: gray; margin-top: -0.5em;">（依照日期排序，最新在最上方）</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+
+<!-- 搜尋框 -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em;">
+    <form method="get" style="margin: 0;">
+        <input type="text" name="searchKeyword" placeholder="搜尋日誌..." value="@Model.SearchKeyword" />
+        <button type="submit">搜尋</button>
+    </form>
+
+    <div style="color: gray;">
+        共 @Model.DiaryCount 筆
+    </div>
+</div>
+
+
+<p><a asp-page="Create">➕ 新增日誌</a></p>
+<a asp-page="/Diaries/Calendar">📅 月曆檢視</a>
+
+
+@foreach (var diary in Model.Diaries)
+{
+    <div style="margin-bottom: 1.5em; padding: 1em; border: 1px solid #ccc; border-radius: 8px;">
+        
+        @* 👉 縮圖顯示在標題上方 *@
+        @if (!string.IsNullOrEmpty(diary.ImagePath))
+        {
+            <a asp-page="Details" asp-route-id="@diary.Id">
+                <img src="@diary.ImagePath" alt="日誌圖片"
+                     style="max-height: 150px; border-radius: 8px; margin-bottom: 0.75em;
+                            transition: transform 0.3s ease; display: block;" 
+                     onmouseover="this.style.transform='scale(1.03)'"
+                     onmouseout="this.style.transform='scale(1)'" />
+            </a>
+        }
+
+        <h3>@diary.Title</h3>
+        <p><strong>日期：</strong>@diary.Date.ToString("yyyy-MM-dd")</p>
+        <p><strong>標籤：</strong>
+            @foreach (var tag in diary.DiaryTags.Select(dt => dt.Tag))
+            {
+                <span style="background: #e0e0e0; padding: 3px 6px; margin-right: 5px; border-radius: 4px;">@tag.Name</span>
+            }
+        </p>
+        <p>@(diary.Content.Length > 100 ? diary.Content.Substring(0, 100) + "..." : diary.Content)</p>
+        <p><a asp-page="Details" asp-route-id="@diary.Id">🔍 查看詳情</a></p>
+        <a asp-page="Edit" asp-route-id="@diary.Id">✏️ 編輯</a> |
+        <!-- <a asp-page="Delete" asp-route-id="@diary.Id">🗑️ 刪除</a> -->
+        <!-- 修改刪除按鈕為表單 -->
+        <form method="post" asp-page-handler="Delete" onsubmit="return confirm('確定要刪除這篇日誌嗎？');" style="display:inline;">
+            <input type="hidden" name="DeleteId" value="@diary.Id" />
+            <button type="submit" class="btn btn-danger btn-sm">🗑️ 刪除</button>
+        </form>
+    </div>
+}
+

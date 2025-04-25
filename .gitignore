@@ -1,0 +1,49 @@
+# 忽略所有 bin / obj
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET temporary files
+*.dbmdl
+*.bak
+*.log
+*.cache
+*.tmp
+
+# IIS Express
+.vs/
+*.vspscc
+*.vssscc
+
+# Rider
+.idea/
+
+# Visual Studio Code 忽略 VS Code 設定
+.vscode/
+.history/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Environment variable files
+.env
+.env.*
+
+# Logs
+*.log
+
+# Others
+*.swp
+*.swo
+*.tmp
+
