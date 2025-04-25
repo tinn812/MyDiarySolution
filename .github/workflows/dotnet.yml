@@ -1,0 +1,36 @@
+# 這是 .NET 的 CI 測試流程
+name: .NET CI
+
+# 當你 push 或開 pull request 到 main 分支時執行
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # 在 Ubuntu 上執行（最快）
+    runs-on: ubuntu-latest
+
+    steps:
+    # 第一步：拉取原始碼
+    - uses: actions/checkout@v4
+
+    # 第二步：安裝 .NET SDK（8.0）
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # 第三步：還原 NuGet 套件
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 第四步：建置專案
+    - name: Build
+      run: dotnet build --no-restore
+
+    # 第五步：執行單元測試
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
