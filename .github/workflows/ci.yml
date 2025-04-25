@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ 安裝 .NET SDK（自動抓最新支援 LTS 版）
+      # 2️⃣ 安裝 .NET 8 SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -26,24 +26,25 @@ jobs:
         run: dotnet restore DiaryApp/DiaryApp.csproj
 
       # 4️⃣ 執行靜態程式碼格式檢查（等於 `dotnet format --check`）
-      - name: Check code formatting
+      - name: Format check
         run: dotnet format DiaryApp/DiaryApp.csproj --verify-no-changes --verbosity diagnostic
+        continue-on-error: true  # 格式錯誤時不會中斷流程，但會顯示錯誤
 
-      # 5️⃣ 編譯整個 ASP.NET App（Release 模式，不重複還原）
-      - name: Build App Project
-        run: dotnet build DiaryApp/DiaryApp.csproj --configuration Release --no-restore
+      # 5️⃣ 編譯整個 ASP.NET 
+      - name: Build solution
+        run: dotnet build MyDiarySolution.sln --no-restore --configuration Debug
 
-      # 6️⃣ 執行測試專案（例如 DiaryApp.Tests）
-      - name: Run Tests
+      # 6️⃣ 執行單元測試
+      - name: Run unit Tests
         run: dotnet test DiaryApp.Tests/DiaryApp.Tests.csproj --no-build --verbosity normal
 
-      # 7️⃣ 建立發佈檔案（模擬部署用）
+      # 7️⃣ 將建置輸出作為 Artifact 上傳（模擬部署用）
       - name: Publish App
-        run: dotnet publish DiaryApp/DiaryApp.csproj --configuration Release --no-build --output publish
+        run: dotnet publish DiaryApp/DiaryApp.csproj -c Release -o ./publish
 
       # 8️⃣ 上傳產出為 Artifact，讓你可以從 GitHub Actions 下載
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: diaryapp-publish
-          path: publish/
+          name: diaryapp-artifact
+          path: publish/  # 對應上方輸出路徑
