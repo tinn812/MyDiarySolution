@@ -27,7 +27,7 @@ jobs:
 
       # 4️⃣ 執行靜態程式碼格式檢查（等於 `dotnet format --check`）
       - name: Format check
-        run: dotnet format DiaryApp/DiaryApp.csproj --verify-no-changes --verbosity diagnostic
+        run: dotnet format MyDiarySolution.sln --verify-no-changes --verbosity diagnostic
         continue-on-error: true  # 格式錯誤時不會中斷流程，但會顯示錯誤
 
       # 5️⃣ 編譯整個 ASP.NET 
@@ -39,12 +39,12 @@ jobs:
         run: dotnet test MyDiarySolution.sln --no-build --verbosity normal
 
       # 7️⃣ 將建置輸出作為 Artifact 上傳（模擬部署用）
-      - name: Publish App
+      - name: Publish (Build artifacts)
         run: dotnet publish DiaryApp/DiaryApp.csproj -c Release -o ./publish
 
-      # 8️⃣ 上傳產出為 Artifact，讓你可以從 GitHub Actions 下載
-      - name: Upload Build Artifact
+      # 8️⃣ 上傳產出為 Artifact，可以從 GitHub Actions 下載
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: diaryapp-artifact
-          path: publish/  # 對應上方輸出路徑
+          path: publish/  # 上傳剛剛 publish 出來的檔案夾（裡面就是部署用的成品）
