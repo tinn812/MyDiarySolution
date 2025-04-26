@@ -14,31 +14,53 @@ jobs:
       # 1 下載你的 GitHub Repo 原始碼
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false # 下面要自己設定身份
+          fetch-depth: 0 # 拿到完整 Git 歷史 (等等要用)
 
-      # 2 安裝 .NET 8 SDK
+      # 2 設定 GitHub Token 身份（用來存取 GitHub Repo）
+      - name: Set up GitHub Identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 3 安裝 .NET 8 SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # 3 還原專案依賴（nuget 套件）
+      # 4 還原專案依賴（nuget 套件）
       - name: Restore dependencies
         run: dotnet restore MyDiarySolution.sln
 
-      # 4 執行靜態程式碼格式檢查（等於 `dotnet format --check`）
-      - name: Format check
-        run: dotnet format MyDiarySolution.sln --verify-no-changes --verbosity diagnostic
+      # 5 格式化，並且自動修正格式問題
+      - name: Format code
+        run: dotnet format MyDiarySolution.sln --verbosity diagnostic
         continue-on-error: true  # 格式錯誤時不會中斷流程，但會顯示錯誤
 
-      # 5 編譯整個 ASP.NET 建置專案（Debug）
+      # 6. 如果有修正，提交一個新的 commit
+      - name: Commit and Push changes if needed
+        run: |
+          if [[ `git status --porcelain` ]]; then
+            git add .
+            git commit -m "style: fix formatting by GitHub Actions"
+            git push origin HEAD:main
+            echo "Changes pushed."
+            exit 0
+          else
+            echo "No changes needed."
+          fi
+
+      # 7 建置專案 編譯整個 ASP.NET
       - name: Build solution
         run: dotnet build MyDiarySolution.sln --no-restore --configuration Debug
 
-      # 6 執行單元測試
-      - name: Run unit Tests
+      # 8 執行測試
+      - name: Run Tests
         run: dotnet test MyDiarySolution.sln --no-build --verbosity normal
 
-      # 7. 預先跑一次遷移，確保 migration 沒問題（模擬啟動 確認資料庫能成功建表）
+      # 9. 資料庫 Migration 測試
       - name: Apply Database Migrations Check
         run: |
           dotnet tool install --global dotnet-ef
@@ -47,13 +69,13 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Development # dotnet ef database update 在測試環境下建表
 
-      # 8 發佈/將建置輸出作為 Artifact 上傳（模擬部署用）
+      # 10 發佈/將建置輸出作為 Artifact 上傳（模擬部署用）
       - name: Publish (Build artifacts)
         run: dotnet publish DiaryApp/DiaryApp.csproj -c Release -o ./publish
 
-      # 9 上傳發佈檔 Artifact，可從 GitHub Actions 下載
+      # 11 上傳發佈檔 Artifact，可從 GitHub Actions 下載
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: diaryapp-artifact
-          path: publish/  # 上傳剛剛 publish 出來的檔案夾（裡面就是部署用的成品）
+          path: publish  # 上傳剛剛 publish 出來的檔案夾（裡面就是部署用的成品）
