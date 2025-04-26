@@ -13,6 +13,13 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// 🔥 新增：啟動時自動建表
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
