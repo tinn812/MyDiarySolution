@@ -1,0 +1,9 @@
+# 排除不必要的檔案，讓build更快
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+README.md
+bin/
+obj/
+DiaryApp.Tests/
