@@ -4,8 +4,20 @@ using DiaryApp.Models; // 引入你的 Model 命名空間
 var builder = WebApplication.CreateBuilder(args);
 
 // 加入資料庫服務
+//builder.Services.AddDbContext<AppDbContext>(options =>
+    //options.UseSqlite("Data Source=diary.db")); // 使用本地 SQLite 資料庫
+// 使用 PostgreSQL 資料庫
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=diary.db"));
+{
+    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new Exception("DATABASE_URL 環境變數沒有設定！");
+    }
+
+    options.UseNpgsql(connectionString);
+});
+
 
 
 // Add services to the container.
