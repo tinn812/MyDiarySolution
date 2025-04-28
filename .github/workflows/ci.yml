@@ -61,10 +61,6 @@ jobs:
         run: dotnet test MyDiarySolution.sln --no-build --verbosity normal
 
       # 9. 資料庫 Migration 測試
-      - name: Run EF Core migrations
-        run: |
-          dotnet ef database update --no-build
-
       - name: Apply Database Migrations Check
         run: |
           dotnet tool install --global dotnet-ef
