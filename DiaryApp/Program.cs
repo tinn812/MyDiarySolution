@@ -1,34 +1,48 @@
 using Microsoft.EntityFrameworkCore;
 using DiaryApp.Models; // 引入你的 Model 命名空間
-using DotNetEnv;
+using DotNetEnv; // 只有本地開發需要
 
 var builder = WebApplication.CreateBuilder(args);
-// 讀取 .env
-Env.Load();
+
+// 本地才讀取 .env
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load();
+}
+
+// 取得資料庫連線字串
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+if (string.IsNullOrEmpty(databaseUrl))
+{
+    throw new Exception("沒有設定 DATABASE_URL 環境變數。請檢查 Render 設定或 .env 檔。");
+}
+
+string connectionString;
+
+if (databaseUrl.StartsWith("postgresql://"))
+{
+    // ➔ Render 給的是 postgresql://，需要轉換
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':');
+    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
+}
+else
+{
+    // ➔ 本地自訂 PostgreSQL（或直接用 SQLite）
+    connectionString = databaseUrl;
+}
 
 // 加入資料庫服務
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
-
-    if (string.IsNullOrEmpty(connectionString))
+    if (connectionString.Contains("Host="))
     {
-        // 如果沒有設環境變數，則使用 SQLite 本地開發
-        options.UseSqlite("Data Source=diary.db");
-    }
-    else if (connectionString.StartsWith("postgresql://"))
-    {
-        // Render 的連線字串是 URL 格式，要轉成 Npgsql 格式
-        var databaseUri = new Uri(connectionString);
-        var userInfo = databaseUri.UserInfo.Split(':');
-        var npgsqlConnectionString = $"Host={databaseUri.Host};Port={databaseUri.Port};Username={userInfo[0]};Password={userInfo[1]};Database={databaseUri.AbsolutePath.TrimStart('/')};SSL Mode=Require;Trust Server Certificate=true";
-
-        options.UseNpgsql(npgsqlConnectionString);
+        options.UseNpgsql(connectionString); // PostgreSQL
     }
     else
     {
-        // 本地 PostgreSQL 直接使用
-        options.UseNpgsql(connectionString);
+        options.UseSqlite(connectionString); // SQLite
     }
 });
 
