@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiaryApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250428113932_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250428164410_DateTimeUtcFix")]
+    partial class DateTimeUtcFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

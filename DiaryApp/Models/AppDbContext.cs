@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiaryApp.Models
 {
@@ -20,6 +21,21 @@ namespace DiaryApp.Models
                 .HasKey(dt => new { dt.DiaryId, dt.TagId });
 
             base.OnModelCreating(modelBuilder);
+
+            // 自動把所有 DateTime 存成 UTC
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(new ValueConverter<DateTime, DateTime>(
+                            v => v.ToUniversalTime(),
+                            v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                        ));
+                    }
+                }
+            }
         }
     }
 }
