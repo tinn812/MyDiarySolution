@@ -1,22 +1,37 @@
 using Microsoft.EntityFrameworkCore;
 using DiaryApp.Models; // 引入你的 Model 命名空間
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+// 讀取 .env
+Env.Load();
 
 // 加入資料庫服務
-//builder.Services.AddDbContext<AppDbContext>(options =>
-    //options.UseSqlite("Data Source=diary.db")); // 使用本地 SQLite 資料庫
-// 使用 PostgreSQL 資料庫
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+
     if (string.IsNullOrEmpty(connectionString))
     {
-        throw new Exception("DATABASE_URL 環境變數沒有設定！");
+        // 如果沒有設環境變數，則使用 SQLite 本地開發
+        options.UseSqlite("Data Source=diary.db");
     }
+    else if (connectionString.StartsWith("postgresql://"))
+    {
+        // Render 的連線字串是 URL 格式，要轉成 Npgsql 格式
+        var databaseUri = new Uri(connectionString);
+        var userInfo = databaseUri.UserInfo.Split(':');
+        var npgsqlConnectionString = $"Host={databaseUri.Host};Port={databaseUri.Port};Username={userInfo[0]};Password={userInfo[1]};Database={databaseUri.AbsolutePath.TrimStart('/')};SSL Mode=Require;Trust Server Certificate=true";
 
-    options.UseNpgsql(connectionString);
+        options.UseNpgsql(npgsqlConnectionString);
+    }
+    else
+    {
+        // 本地 PostgreSQL 直接使用
+        options.UseNpgsql(connectionString);
+    }
 });
+
 
 
 
