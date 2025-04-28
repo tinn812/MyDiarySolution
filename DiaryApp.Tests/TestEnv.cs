@@ -3,7 +3,7 @@ using DotNetEnv;
 
 class TestEnv
 {
-    static void Main(string[] args)
+    static void Test_DatabaseUrl(string[] args)
     {
         // 讀取 .env
         Env.Load();
