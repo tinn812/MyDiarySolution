@@ -37,5 +37,14 @@ namespace DiaryApp.Models
                 }
             }
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            // 忽略 PendingModelChangesWarning 警告
+            optionsBuilder.ConfigureWarnings(warnings =>
+                warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+        }
     }
 }
