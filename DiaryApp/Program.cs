@@ -4,11 +4,8 @@ using DotNetEnv; // 只有本地開發需要
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 本地才讀取 .env
-if (builder.Environment.IsDevelopment())
-{
-    Env.Load();
-}
+Env.Load();
+
 
 // 取得資料庫連線字串
 var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
