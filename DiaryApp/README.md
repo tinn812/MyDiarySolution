@@ -1,3 +1,6 @@
+![.NET Core CI](https://github.com/tinn812/MyDiarySolution/actions/workflows/dotnet.yml/badge.svg)
+這是一個 ASP.NET Core 製作的日誌系統，支援 PostgreSQL、SQLite、多標籤與圖片上傳...
+
 # DIARYAPP
 
 .env 中 DATABASE_URL 決定使用資料庫
