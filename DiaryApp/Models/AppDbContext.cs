@@ -38,10 +38,10 @@ namespace DiaryApp.Models
                 }
             }
         }
-    
+
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-            //optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+        //optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
         //}
 
     }

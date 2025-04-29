@@ -43,11 +43,13 @@ jobs:
       - name: Commit and Push changes if needed
         run: |
           if [[ `git status --porcelain` ]]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
             git add .
             git commit -m "style: fix formatting by GitHub Actions"
             git push origin HEAD:main
             echo "Changes pushed."
-            exit 0
           else
             echo "No changes needed."
           fi
