@@ -49,6 +49,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // 加入 API Controller 支援
 builder.Services.AddControllers();
+// 加入 Swagger 服務
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -66,6 +69,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage(); // 顯示詳細錯誤頁面
+
+    app.UseSwagger();  // 啟用 Swagger 文件生成
+    app.UseSwaggerUI();  // 啟用 Swagger UI 視覺化介面
 }
 else
 {
