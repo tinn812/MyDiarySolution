@@ -1,4 +1,21 @@
+![.NET Core CI](https://github.com/tinn812/MyDiarySolution/actions/workflows/ci.yml/badge.svg)
+這是一個 ASP.NET Core 製作的日誌系統，支援 PostgreSQL、SQLite、多標籤與圖片上傳...
+
 # DIARYAPP
+
+.env 中 DATABASE_URL 決定使用資料庫
+
+切換資料庫需重建Migrations
+```
+dotnet ef migrations add InitialCreate
+```
+用 Local 的 SQLite 需再
+```
+ dotnet ef database update
+```
+！Render 的 sql 不執行此行
+
+
 pass
 ## pass
 
