@@ -1,4 +1,17 @@
 # DIARYAPP
+
+.env 中 DATABASE_URL 決定使用資料庫
+切換資料庫需刪除Migrations，重建
+```
+dotnet ef migrations add InitialCreate
+```
+用 Local 的 SQLite 需再
+```
+ dotnet ef database update
+```
+！Render 的 sql 不執行此行
+
+
 pass
 ## pass
 
