@@ -1,7 +1,8 @@
 # DIARYAPP
 
 .env 中 DATABASE_URL 決定使用資料庫
-切換資料庫需刪除Migrations，重建
+
+切換資料庫需重建Migrations
 ```
 dotnet ef migrations add InitialCreate
 ```
