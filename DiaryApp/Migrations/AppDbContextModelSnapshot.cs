@@ -17,18 +17,16 @@ namespace DiaryApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("DiaryApp.Models.Diary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -49,7 +47,7 @@ namespace DiaryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Diaries");
+                    b.ToTable("Diaries", (string)null);
                 });
 
             modelBuilder.Entity("DiaryApp.Models.DiaryTag", b =>
@@ -64,16 +62,15 @@ namespace DiaryApp.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("DiaryTags");
+                    b.ToTable("DiaryTags", (string)null);
                 });
 
             modelBuilder.Entity("DiaryApp.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -81,7 +78,7 @@ namespace DiaryApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("DiaryApp.Models.DiaryTag", b =>
