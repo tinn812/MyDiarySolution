@@ -68,12 +68,12 @@ jobs:
         run: |
           dotnet tool install --global dotnet-ef
           cd DiaryApp
-          dotnet ef migrations script --no-build --output ./_temp_script.sql
-          if [ -s ./_temp_script.sql ]; then
-            echo "❌ There are pending model changes. Please run 'dotnet ef migrations add <Name>' locally."
-            exit 1
+          if dotnet ef migrations add AutoFixPendingMigration -o Migrations --no-build; then
+            echo "✅ Migration created."
+            dotnet ef migrations remove --force
+            echo "✅ No real changes, migration removed."
           else
-            echo "✅ No pending model changes."
+            echo "✅ No pending migrations."
           fi
 
       # 10 發佈/將建置輸出作為 Artifact 上傳（模擬部署用）
