@@ -41,10 +41,10 @@ jobs:
 
       # 6. 如果有修正，提交一個新的 commit
       - name: Commit and Push changes if needed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token 來上傳檔案
         run: |
           if [[ `git status --porcelain` ]]; then
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
             git add .
             git commit -m "style: fix formatting by GitHub Actions"
@@ -63,30 +63,18 @@ jobs:
         run: dotnet test MyDiarySolution.sln --no-build --verbosity normal
 
       # 9. 資料庫 Migration 測試
-      - name: Install EF Core CLI
-        run: dotnet tool install --global dotnet-ef
-
       # 自動比對是否有 Pending Model Changes
       - name: Check for Pending Migrations
         run: |
+          dotnet tool install --global dotnet-ef
           cd DiaryApp
-          if dotnet ef migrations add TempAutoMigration --no-build; then
-            echo "There are pending model changes."
-            git reset --hard
-            echo "❌ Build failed because pending model changes detected. Please run 'dotnet ef migrations add <Name>' locally."
+          dotnet ef migrations script --no-build --output ./_temp_script.sql
+          if [ -s ./_temp_script.sql ]; then
+            echo "❌ There are pending model changes. Please run 'dotnet ef migrations add <Name>' locally."
             exit 1
           else
-            echo "✅ No pending model changes detected."
+            echo "✅ No pending model changes."
           fi
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
-
-      - name: Run Database Migrations
-        run: |
-          cd DiaryApp
-          dotnet ef database update --no-build
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
 
       # 10 發佈/將建置輸出作為 Artifact 上傳（模擬部署用）
       - name: Publish (Build artifacts)
