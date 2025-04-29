@@ -5,7 +5,7 @@
 namespace DiaryApp.Migrations
 {
     /// <inheritdoc />
-    public partial class SyncModelWithPostgres : Migration
+    public partial class CheckPendingMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
