@@ -1,4 +1,4 @@
-![.NET Core CI](https://github.com/tinn812/MyDiarySolution/actions/workflows/dotnet.yml/badge.svg)
+![.NET Core CI](https://github.com/tinn812/MyDiarySolution/actions/workflows/ci.yml/badge.svg)
 這是一個 ASP.NET Core 製作的日誌系統，支援 PostgreSQL、SQLite、多標籤與圖片上傳...
 
 # DIARYAPP
