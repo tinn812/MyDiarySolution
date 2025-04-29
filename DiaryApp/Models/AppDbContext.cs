@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DiaryApp.Models
 {
@@ -37,5 +38,11 @@ namespace DiaryApp.Models
                 }
             }
         }
+    
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+            //optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
+        //}
+
     }
 }

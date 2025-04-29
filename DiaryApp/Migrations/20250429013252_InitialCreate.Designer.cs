@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiaryApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250429011922_SyncModelWithPostgreSQL")]
-    partial class SyncModelWithPostgreSQL
+    [Migration("20250429013252_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
