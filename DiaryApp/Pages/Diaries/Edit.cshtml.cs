@@ -31,7 +31,7 @@ namespace DiaryApp.Pages.Diaries
 
             Diary.Id = diary.Id;
             Diary.Title = diary.Title;
-            Diary.Date = diary.Date;
+            Diary.Date = diary.Date.ToLocalTime();
             Diary.Content = diary.Content;
             Diary.Tags = string.Join(", ", diary.DiaryTags.Select(dt => dt.Tag.Name));
             Diary.ExistingImagePath = diary.ImagePath;

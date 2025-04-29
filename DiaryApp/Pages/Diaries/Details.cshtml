@@ -6,7 +6,7 @@
 
 <h2>@Model.Diary.Title</h2>
 
-<p><strong>日期：</strong>@Model.Diary.Date.ToString("yyyy-MM-dd")</p>
+<p><strong>日期：</strong>@Model.Diary.Date.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</p>
 
 <p><strong>標籤：</strong>
     @foreach (var tag in Model.Diary.DiaryTags.Select(dt => dt.Tag))

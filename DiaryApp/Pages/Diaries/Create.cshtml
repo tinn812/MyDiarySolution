@@ -15,7 +15,7 @@
 
     <div>
         <label for="Diary_Date">日期：</label>
-        <input asp-for="Diary.Date" type="date" value="@Model.Diary.Date.ToString("yyyy-MM-dd")" />
+        <input asp-for="Diary.Date" type="datetime-local" />
         <span asp-validation-for="Diary.Date"></span>
     </div>
 

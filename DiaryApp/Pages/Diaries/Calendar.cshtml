@@ -18,6 +18,11 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             events: '/Diaries/Calendar?handler=Events',
+            displayEventTime: true, // 顯示時間
+            eventTimeFormat: { // 顯示時間格式（24小時制）
+                hour: '2-digit',
+                hour12: false
+            },
             eventClick: function (info) {
                 info.jsEvent.preventDefault();
                 if (info.event.url) {

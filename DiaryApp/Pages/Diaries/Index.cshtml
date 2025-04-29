@@ -49,7 +49,7 @@
         }
 
         <h3>@diary.Title</h3>
-        <p><strong>日期：</strong>@diary.Date.ToString("yyyy-MM-dd")</p>
+        <p><strong>日期：</strong>@diary.Date.ToLocalTime().ToString("yyyy-MM-dd")</p>
         <p><strong>標籤：</strong>
             @foreach (var tag in diary.DiaryTags.Select(dt => dt.Tag))
             {

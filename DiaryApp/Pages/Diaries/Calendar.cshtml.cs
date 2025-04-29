@@ -18,12 +18,15 @@ namespace DiaryApp.Pages.Diaries
 
         public IActionResult OnGetEvents()
         {
-            var events = _context.Diaries.Select(d => new
-            {
-                title = d.Title,
-                start = d.Date.ToString("yyyy-MM-dd"),
-                url = Url.Page("/Diaries/Details", new { id = d.Id })
-            }).ToList();
+            var events = _context.Diaries
+                .OrderBy(d => d.Date)
+                .Select(d => new
+                {
+                    title = d.Title,
+                    start = d.Date.ToLocalTime().ToString("yyyy-MM-ddTHH:mm:ss"),
+                    url = Url.Page("/Diaries/Details", new { id = d.Id })
+                })
+                .ToList();
 
             return new JsonResult(events, new JsonSerializerOptions
             {

@@ -37,7 +37,7 @@ namespace DiaryApp.Pages.Diaries
             var newDiary = new Diary
             {
                 Title = Diary.Title,
-                Date = Diary.Date == default ? DateTime.Today : Diary.Date,
+                Date = Diary.Date == default ? DateTime.Now : Diary.Date,
                 Content = Diary.Content,
                 CreatedAt = DateTime.Now
             };
