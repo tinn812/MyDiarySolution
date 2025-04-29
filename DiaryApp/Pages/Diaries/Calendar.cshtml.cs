@@ -23,7 +23,7 @@ namespace DiaryApp.Pages.Diaries
                 .Select(d => new
                 {
                     title = d.Title,
-                    start = d.Date.ToLocalTime().ToString("yyyy-MM-ddTHH:mm:ss"),
+                    start = d.Date,//.ToLocalTime().ToString("yyyy-MM-ddTHH:mm:sszzz"), // 加上 zzz 才會有時區
                     url = Url.Page("/Diaries/Details", new { id = d.Id })
                 })
                 .ToList();

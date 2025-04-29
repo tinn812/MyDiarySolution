@@ -17,6 +17,7 @@
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
+            timeZone: 'local', // 加這一行
             events: '/Diaries/Calendar?handler=Events',
             displayEventTime: true, // 顯示時間
             eventTimeFormat: { // 顯示時間格式（24小時制）
