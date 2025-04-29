@@ -61,13 +61,30 @@ jobs:
         run: dotnet test MyDiarySolution.sln --no-build --verbosity normal
 
       # 9. 資料庫 Migration 測試
+      - name: Install EF Core CLI
+        run: dotnet tool install --global dotnet-ef
+
+      # 自動比對是否有 Pending Model Changes
+      - name: Check for Pending Migrations
+        run: |
+          cd DiaryApp
+          if dotnet ef migrations add TempAutoMigration --no-build; then
+            echo "There are pending model changes."
+            git reset --hard
+            echo "❌ Build failed because pending model changes detected. Please run 'dotnet ef migrations add <Name>' locally."
+            exit 1
+          else
+            echo "✅ No pending model changes detected."
+          fi
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+
       - name: Run Database Migrations
         run: |
-          dotnet tool install --global dotnet-ef  # 安裝 EF Core CLI 工具
           cd DiaryApp
           dotnet ef database update --no-build
         env:
-          ASPNETCORE_ENVIRONMENT: Development # dotnet ef database update 在測試環境下建表
+          ASPNETCORE_ENVIRONMENT: Development
 
       # 10 發佈/將建置輸出作為 Artifact 上傳（模擬部署用）
       - name: Publish (Build artifacts)
