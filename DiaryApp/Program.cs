@@ -47,7 +47,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 
-
+// 加入 API Controller 支援
+builder.Services.AddControllers();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -81,5 +82,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+// 建立 API Controller
+app.MapControllers();
 
 app.Run();
