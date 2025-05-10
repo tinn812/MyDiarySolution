@@ -1,15 +1,44 @@
 ![.NET Core CI](https://github.com/tinn812/MyDiarySolution/actions/workflows/ci.yml/badge.svg)
-這是一個 ASP.NET Core 製作的日誌系統，支援 PostgreSQL、SQLite、多標籤與圖片上傳...
+這是一個 ASP.NET Core 製作的日誌系統，支援 PostgreSQL、SQLite、多標籤與圖片上傳...開發中(此為公開版)
 
 # DIARYAPP
+前往 http://localhost:5034/Diaries/Index 啟動網站
+
+或 https://mydiarysolution.onrender.com 測試部署版本
+
+測試API：
+
+在瀏覽器輸入：`https://localhost:5001/api/diaries`
+
+或 Swagger UI ：`https://localhost:5001/swagger`
+查看所有 API 的路徑、方法以及測試
+
+- 專案結構（簡略）
+
+```
+MyDiarySolution/
+├── .github/workflows/ci.yml   # GitHub Actions 的設定檔
+├── DiaryApp           # 主網站專案
+│   ├── DiaryApp.csproj
+│   └── ...
+├── DiaryApp.Test/     # 測試專案
+│   ├── DiaryApp.Tests.csproj
+│   └── ...
+├── MyDiarySolution.sln    # Solution
+├── .env              # DATABASE_URL 讀取資料庫連線字串，可使用Render提供之PostgreSQL
+├── Dockerfile        # Render 用 Dockerfile 來部署
+├── .dockerignore
+└── README.md       # 待補
+```
+
 
 .env 中 DATABASE_URL 決定使用資料庫
 
-切換資料庫需重建Migrations
+切換資料庫重建Migrations
 ```
 dotnet ef migrations add InitialCreate
 ```
-用 Local 的 SQLite 需再
+用 Local 的 SQLite 需
 ```
  dotnet ef database update
 ```
@@ -17,7 +46,8 @@ dotnet ef migrations add InitialCreate
 
 
 pass
-## pass
+## Description 
+pass
 
 
 ## Model 規劃
