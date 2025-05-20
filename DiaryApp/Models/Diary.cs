@@ -15,7 +15,7 @@ namespace DiaryApp.Models
 
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<DiaryTag> DiaryTags { get; set; }
+        public ICollection<DiaryTag> DiaryTags { get; set; } // ICollection 1對多
 
         public string? ImagePath { get; set; }
 
